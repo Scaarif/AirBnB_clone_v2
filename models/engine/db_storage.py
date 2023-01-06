@@ -57,7 +57,7 @@ class DBStorage:
             if type(cls) is str:
                 cls = classes[cls]
             objs = self.__session.query(cls).all()
-            print('all called: ', objs)
+            # :print('all called: ', objs)
         else:
             # return all objects
             objs = []
@@ -111,4 +111,4 @@ class DBStorage:
 
     def close(self):
         """ removes/closes session """
-        self.session.close()
+        self.__session.close()

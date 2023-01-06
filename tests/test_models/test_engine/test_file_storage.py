@@ -7,8 +7,10 @@ from models import storage
 import os
 
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                 "this's an alternative storage engine to the db")
 class test_fileStorage(unittest.TestCase):
-    """ Class to test the file storage method """
+    """ Class to test the file storage option methods """
 
     def setUp(self):
         """ Set up test environment """
@@ -53,7 +55,7 @@ class test_fileStorage(unittest.TestCase):
         temp = storage.all(City)
         self.assertTrue(city_key in temp.keys())
         self.assertTrue(base_key not in temp.keys())
-    
+
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
         new = BaseModel()
@@ -120,7 +122,7 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
-    
+
     def test_delete(self):
         """ test that delete deletes/removes an object if it exists """
         base = BaseModel()
@@ -130,7 +132,7 @@ class test_fileStorage(unittest.TestCase):
         self.assertTrue(base_key in temp.keys())
         storage.delete(base)
         self.assertTrue(base_key not in temp.keys())
-    
+
     def test_delete_with_undefined_object(self):
         """ test that delete does nothing if object is undefined(is None) """
         base = BaseModel()
@@ -140,7 +142,7 @@ class test_fileStorage(unittest.TestCase):
         self.assertTrue(base_key in temp.keys())
         storage.delete()
         self.assertTrue(base_key in temp.keys())
-    
+
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
         new = BaseModel()
