@@ -8,6 +8,8 @@ import json
 import os
 
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "BaseModel not mapped (not a schema)")
 class test_basemodel(unittest.TestCase):
     """ """
 
