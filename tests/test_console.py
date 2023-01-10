@@ -15,7 +15,7 @@ class Test_prompting(unittest.TestCase):
 
     def test_prompt_string(self):
         """ test that the prompt is '(hbnb) '"""
-        self.assertEqual("-(hbnb)", HBNBCommand.prompt)
+        self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
     def test_empty_line(self):
         """ test that cmd's emptyline method is overriden: returns nothing """
