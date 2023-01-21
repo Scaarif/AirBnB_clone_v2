@@ -16,11 +16,9 @@ def do_pack():
         local('mkdir -p versions')
         # generate the archive into the created folder
         now = datetime.now().strftime("%Y%m%d%H%M%S")
-        archive_path = f'versions/web_static_{now}.tgz'
+        archive_path = 'versions/web_static_{}.tgz'.format(now)
         # print(f'Packing web_static to {archive_path}')
-        local(f'tar -cvzf {archive_path} web_static/')
-        # get the newly created file and create a path to return
-        # size = os.path.getsize(archive_path)
+        local('tar -cvzf {} web_static/'.format(archive_path))
         # print(f'web_static packed: {archive_path} -> {size}Bytes')
         return archive_path
     except Exception:
