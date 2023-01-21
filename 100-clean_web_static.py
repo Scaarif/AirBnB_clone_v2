@@ -25,7 +25,9 @@ def do_clean(number=0):
         # keep upto number(th) most recent archives
         if int(files) > number:
             with lcd("versions/"):
-                local(f'rm -f $(ls -1t | tail -n {int(files) - number})')
+                local('rm -f $(ls -1t | tail -n {})'
+                      .format(int(files) - number))
         if int(dirs) > number:
             with cd("/data/web_static/releases/"):
-                run(f'sudo rm -rf $(ls -1t | tail -n {int(dirs) - number})')
+                run('sudo rm -rf $(ls -1t | tail -n {})'
+                    .format(int(files) - number))
