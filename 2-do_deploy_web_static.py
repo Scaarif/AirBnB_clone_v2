@@ -28,18 +28,19 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         folder = filename[:filename.find('.')]
         # create the folder (to hold the archive)
-        run(f'mkdir -p data/web_static/releases/{folder}/')
+        run('sudo mkdir -p /data/web_static/releases/{}/'.format(folder))
         # extract the files/archive in created folder
-        run(f'tar -xzf /tmp/{filename} -C data/web_static/releases/{folder}/')
-        with cd(f"data/web_static/releases/{folder}/"):
+        run('sudo tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
+            .format(filename, folder))
+        with cd(f"/data/web_static/releases/{}/".format(folder)):
             run('mv web_static/* .; rm -rf web_static')
         # delete the archive from the web server
-        run(f'rm -f /tmp/{filename}')
+        run('sudo rm -f /tmp/{}'.format(filename))
         # delete the symbolic link /data/web_static/current on the web server
-        run('rm -f data/web_static/current')
-        # create a new symbolic link /data/web_static/current (linked to the new
-        run(f'ln -s data/web_static/releases/{folder}/ \
-                data/web_static/current')
+        run('sudo rm -f /data/web_static/current')
+        # create a new symbolic link /data/web_static/current
+        with cd("/data/web_static/releases/"):
+            run('sudo ln -sf {}/ /current'.fomat(folder))
         # return True if all operations are correctly done, else return False
         print('New version deployed!')
         return True
