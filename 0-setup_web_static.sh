@@ -4,7 +4,7 @@
 # update and install necessary packages
 apt-get -y update
 apt-get -y install nginx
-# service nginx start
+service nginx start
 # create the required repos
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
