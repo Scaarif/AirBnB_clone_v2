@@ -18,7 +18,7 @@ def do_pack():
     # generate the archive into the created folder
     now = datetime.now()
     now_fstr = now.strftime("%Y%m%d%H%M%S")
-    sources = 'web_static/* web_static'
+    sources = 'web_static'
     archive_path = f'versions/web_static_{now_fstr}.tgz'
     print(f'Packing web_static to {archive_path}')
     if local(f'tar -cvzf {archive_path} {sources}').failed:
