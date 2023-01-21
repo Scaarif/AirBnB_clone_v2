@@ -14,18 +14,15 @@ def do_clean(number=0):
     """ deletes 'archives - number' archives in
     /data/web_static/releases/ of both servers
     """
-    with cd("/data/web_static/releases/"):
-        dirs = run('ls -1t | wc -l')
-    files = local('ls -1t versions/ | wc -l', capture=True)
     number = int(number)
+    root = '/data/web_static/releases/'
     # get the number of folders to delete
-    if number < 2:
-        number = 1
+    if number < 1:
+        number = 2
     else:
-        # keep upto number(th) most recent archives
-        with lcd("versions/"):
-            local('rm -f $(ls -1t | tail -n {})'
-                  .format(int(files) - number))
-        with cd("/data/web_static/releases/"):
-            run('sudo rm -rf $(ls -1t | tail -n {})'
-                .format(int(files) - number))
+        number += 1
+    # keep upto number(th) most recent archives
+    local('cd versions ; ls -t | tail -n +{} | xargs rm -rf'
+          .format(number))
+    run('cd {} ; ls -t | tail -n +{} | xargs rm -rf'
+        .format(root, number))
