@@ -23,11 +23,9 @@ def do_clean(number=0):
         number = 1
     else:
         # keep upto number(th) most recent archives
-        if int(files) > number:
-            with lcd("versions/"):
-                local('rm -f $(ls -1t | tail -n {})'
-                      .format(int(files) - number))
-        if int(dirs) > number:
-            with cd("/data/web_static/releases/"):
-                run('sudo rm -rf $(ls -1t | tail -n {})'
-                    .format(int(files) - number))
+        with lcd("versions/"):
+            local('rm -f $(ls -1t | tail -n {})'
+                  .format(int(files) - number))
+        with cd("/data/web_static/releases/"):
+            run('sudo rm -rf $(ls -1t | tail -n {})'
+                .format(int(files) - number))
