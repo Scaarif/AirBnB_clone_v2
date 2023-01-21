@@ -16,7 +16,7 @@ sudo apt-get -y install nginx
 mkdir -p data/web_static/releases/test/
 mkdir -p data/web_static/shared/
 # create a HTML file with simple content to test configuration
-echo "<html><head></head><body><h2>Hello Rahab!</h2></body></html>" > data/web_static/releases/test/index.html
+echo "<html><head></head><body><h2>Holberton School</h2></body></html>" > data/web_static/releases/test/index.html
 # create a symbolic link (/data/web_static/current) to /data/web_static/releases/test/ (replace it if it alraedy exists)
 ln -sf data/web_static/releases/test/ data/web_static/current
 # give ownership of the /data/folder and its contents to 'ubuntu' owner and group
