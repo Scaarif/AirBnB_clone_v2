@@ -6,8 +6,6 @@ from fabric.api import *
 import os
 
 
-do_pack = __import__('1-pack_web_static').do_pack
-
 # set the user to use for ssh
 env.user = 'ubuntu'
 # set the hosts/servers to be involved
@@ -30,19 +28,19 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         folder = filename[:filename.find('.')]
         # create the folder (to hold the archive)
-        run('sudo mkdir -p /data/web_static/releases/{}/'.format(folder))
+        run('mkdir -p /data/web_static/releases/{}/'.format(folder))
         # extract the files/archive in created folder
-        run('sudo tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
+        run('tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
             .format(filename, folder))
         with cd(f"/data/web_static/releases/{}/".format(folder)):
             run('mv web_static/* .; rm -rf web_static')
         # delete the archive from the web server
-        run('sudo rm -f /tmp/{}'.format(filename))
+        run('rm -f /tmp/{}'.format(filename))
         # delete the symbolic link /data/web_static/current on the web server
-        run('sudo rm -f /data/web_static/current')
+        run('rm -f /data/web_static/current')
         # create a new symbolic link /data/web_static/current
         with cd("/data/web_static/releases/"):
-            run('sudo ln -sf {}/ /current'.fomat(folder))
+            run('ln -s {}/ /current'.fomat(folder))
         # return True if all operations are correctly done, else return False
         print('New version deployed!')
         return True
