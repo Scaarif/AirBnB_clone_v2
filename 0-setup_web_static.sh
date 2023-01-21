@@ -21,15 +21,15 @@ fi
 mkdir -p ~/data/web_static/releases/test/
 mkdir -p ~/data/web_static/shared/
 # create a HTML file with simple content to test configuration
-echo "Hello Rahab!" > /data/web_static/releases/test/index.html
+echo "Hello Rahab!" > data/web_static/releases/test/index.html
 # create a symbolic link (/data/web_static/current) to /data/web_static/releases/test/ (replace it if it alraedy exists)
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+ln -sf ~/data/web_static/releases/test/ ~/data/web_static/current
 # give ownership of the /data/folder and its contents to 'ubuntu' owner and group
-sudo chown -R ubuntu:ubuntu /data/
+sudo chown -R ubuntu:ubuntu ~/data/
 # configure Nginx to serve the contents of /data/web_static/current to 'hbnb_static' (eg https://mydomain.tech/hbnb_static ) . use ALIAS inside the configuration
-sudo sed -i '48i\location /hbnb_static {\n\t\t alias /data/web_static/current/;\n}\n' /etc/nginx/sites-available/default
+sudo sed -i '48i\ \tlocation /hbnb_static {\n\t\t alias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 # restart nginx after updating the configuration
-service nginx restart
+sudo service nginx restart
 # exit successfully (always)
 exit 0
 
