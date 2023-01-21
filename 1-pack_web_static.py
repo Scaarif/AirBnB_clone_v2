@@ -25,5 +25,5 @@ def do_pack():
         return None
     # get the newly created file and create a path to return
     size = os.path.getsize(archive_path)
-    print(f'web_static packed: {archive_path} -> {size}')
+    print(f'web_static packed: {archive_path} -> {size}Bytes')
     return archive_path
