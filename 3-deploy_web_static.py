@@ -19,5 +19,4 @@ def deploy():
     if not archive_path:
         return False
     # call the do_deploy(archive_path) function, using the new path
-    deployed = do_deploy(archive_path)
-    return deployed
+    return do_deploy(archive_path)
