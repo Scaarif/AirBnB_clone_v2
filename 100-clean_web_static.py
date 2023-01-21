@@ -20,19 +20,12 @@ def do_clean(number=0):
     number = int(number)
     # get the number of folders to delete
     if number < 2:
-        # delete from versions as well
-        if int(files) > 1:
-            with lcd("versions/"):
-                local(f'rm -f $(ls -1t | tail -n {int(files) - 1})')
-        # keep only the most recent version of your archive
-        if int(dirs) > 1:
-            with cd("/data/web_static/releases/"):
-                run(f'rm -rf $(ls -1t | tail -n {int(dirs) -1})')
+        number = 1
     else:
-        # keep upto nth most recent archives
+        # keep upto number(th) most recent archives
         if int(files) > number:
             with lcd("versions/"):
                 local(f'rm -f $(ls -1t | tail -n {int(files) - number})')
         if int(dirs) > number:
             with cd("/data/web_static/releases/"):
-                run(f'rm -rf $(ls -1t | tail -n {int(dirs) - number})')
+                run(f'sudo rm -rf $(ls -1t | tail -n {int(dirs) - number})')
