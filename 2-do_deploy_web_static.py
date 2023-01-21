@@ -2,7 +2,6 @@
 """ Function that compress a folder """
 from datetime import datetime
 from fabric.api import *
-import shlex
 import os
 
 
@@ -15,26 +14,20 @@ def do_deploy(archive_path):
     if not os.path.exists(archive_path):
         return False
     try:
-        name = archive_path.replace('/', ' ')
-        name = shlex.split(name)
-        name = name[-1]
-
-        wname = name.replace('.', ' ')
-        wname = shlex.split(wname)
-        wname = wname[0]
-
-        releases_path = "/data/web_static/releases/{}/".format(wname)
-        tmp_path = "/tmp/{}".format(name)
+        filename = archive_path[archive_path.find('/') + 1:]
+        folder = filename[:filename.find('.')]
+        archive_path = "/data/web_static/releases/{}/".format(folder)
+        tmp_path = "/tmp/{}".format(filename)
 
         put(archive_path, "/tmp/")
-        run("mkdir -p {}".format(releases_path))
-        run("tar -xzf {} -C {}".format(tmp_path, releases_path))
+        run("mkdir -p {}".format(archive_path))
+        run("tar -xzf {} -C {}".format(tmp_path, archive_path))
         run("rm {}".format(tmp_path))
-        run("mv {}web_static/* {}".format(releases_path, releases_path))
-        run("rm -rf {}web_static".format(releases_path))
+        run("mv {}web_static/* {}".format(archive_path, archive_path))
+        run("rm -rf {}web_static".format(archive_path))
         run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(releases_path))
+        run("ln -s {} /data/web_static/current".format(archive_path))
         print("New version deployed!")
         return True
-    except:
+    except Exception:
         return False
