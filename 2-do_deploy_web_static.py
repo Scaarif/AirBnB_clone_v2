@@ -6,6 +6,8 @@ from fabric.api import *
 import os
 
 
+do_pack = __import__('1-pack_web_static').do_pack
+
 # set the user to use for ssh
 env.user = 'ubuntu'
 # set the hosts/servers to be involved
