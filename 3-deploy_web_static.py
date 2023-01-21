@@ -11,6 +11,7 @@ do_pack = __import__('1-pack_web_static').do_pack
 env.user = 'ubuntu'
 env.hosts = ['54.82.173.163', '18.210.20.118']
 
+
 def do_deploy(archive_path):
     """ distribute an archive to all web servers """
     if not os.path.exists(archive_path):
@@ -25,7 +26,8 @@ def do_deploy(archive_path):
             run('mv web_static/* .; rm -rf web_static')
         run(f'rm -f /tmp/{filename}')
         run('rm -f data/web_static/current')
-        run(f'ln -s data/web_static/releases/{folder}/ data/web_static/current')
+        run(f'ln -s data/web_static/releases/{folder}/ \
+                data/web_static/current')
         print('New version deployed!')
         return True
     except Exception:
@@ -41,6 +43,6 @@ def deploy():
     # return false if no archive has been created
     if not archive_path:
         return False
-    # call the do_deploy(archive_path) function, using the new path of the new archive
+    # call the do_deploy(archive_path) function, using the new path
     deployed = do_deploy(archive_path)
     return deployed
