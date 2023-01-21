@@ -15,7 +15,7 @@ ln -sf /data/web_static/releases/test/ /data/web_static/current
 # change the ownership of /data/ folder
 chown -R ubuntu:ubuntu /data/
 # configure nginx to serve requests from uri/hbnb_static/
-sed -i '40i\\tlocation /hbnb_static/ {\n\t\t alias data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+sed -i '40i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 # restart nginx for configurations to update/apply
 service nginx restart
 # always exit successfully
