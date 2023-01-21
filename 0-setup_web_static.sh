@@ -10,8 +10,8 @@
 # (ex. https://mydomainname.tech/hbnb_static) use alias inside Nginx configuration...
 #	Resttart Nginx after updating the config... 
 	
-apt-get -y update
-apt-get -y install nginx
+sudo apt-get -y update
+sudo apt-get -y install nginx
 # create the folders needed (/data/ folders)
 mkdir -p data/web_static/releases/test/
 mkdir -p data/web_static/shared/
@@ -22,7 +22,7 @@ ln -sf data/web_static/releases/test/ data/web_static/current
 # give ownership of the /data/folder and its contents to 'ubuntu' owner and group
 sudo chown -R ubuntu:ubuntu data/
 # configure Nginx to serve the contents of /data/web_static/current to 'hbnb_static' (eg https://mydomain.tech/hbnb_static ) . use ALIAS inside the configuration
-sudo sed -i '48i\ \tlocation /hbnb_static {\n\t\t alias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+sudo sed -i '48i\ \tlocation /hbnb_static {\n\t\t alias data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 # restart nginx after updating the configuration
 sudo service nginx restart
 # exit successfully (always)
