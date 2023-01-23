@@ -61,7 +61,7 @@ exec {'restart nginx':
 }
 
 # change ownership of the /data/ repo to ubuntu (owner and group)
-file {'/data/':
+file {'/data':
   ensure  => directory,
   owner   => 'ubuntu',
   group   => 'ubuntu',
