@@ -22,7 +22,7 @@ def do_clean(number=0):
     else:
         number += 1
     # keep upto number(th) most recent archives
-    local('cd versions ; ls -t | tail -n +{} | xargs rm -rf'
+    local('cd versions ; rm -rf $(ls -t | tail -n +{})'
           .format(number))
-    run('cd {} ; ls -t | tail -n +{} | xargs rm -rf'
+    run('cd {} ; rm -rf $(ls -t | tail -n +{})'
         .format(root, number))
