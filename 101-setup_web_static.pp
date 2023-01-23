@@ -1,54 +1,69 @@
-# Setup web servers for 'web_static' deployment (task 0 using puppet)
+# Script that configures Nginx server with some folders and files
 
 # ensure nginx is installed
-exec { 'update apt':
-  command => 'sudo apt-get -y update',
-  before  => Exec['install nginx']
+exec {'update apt':
+  provider => shell,
+  command  => 'sudo apt-get -y update',
+  before   => Exec['install nginx'],
 }
 
-exec { 'install nginx':
-  command => 'sudo apt-get -y install nginx',
-  before  => File['/data/']
+exec {'install nginx':
+  provider => shell,
+  command  => 'sudo apt-get -y install nginx',
+  before   => Exec['start nginx'],
 }
 
-# create the /data/ folders if they don't already exist (/data/web_static/releases/test/ /shared/)
-file { '/data':
-  ensure => 'directory'
+exec {'start nginx':
+  provider => shell,
+  command  => 'sudo service nginx start',
+  before   => Exec['data folders'],
 }
-file { '/data/web_static':
-  ensure => 'directory'
+
+# create all the necessary folders/repos (in /data/)
+exec {'data folders':
+  provider => shell,
+  command  => 'sudo mkdir -p /data/web_static/releases/test/',
+  before   => Exec['shared folder'],
 }
-file { '/data/web_static/releases':
-  ensure => 'directory'
+
+exec {'shared folder':
+  provider => shell,
+  command  => 'sudo mkdir -p /data/web_static/shared/',
+  before   => Exec['index.html'],
 }
-file { '/data/web_static/releases/test':
-  ensure => 'directory'
+
+# add a test file in /data/web_static/releases/test/
+exec {'index.html':
+  provider => shell,
+  command  => 'echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html',
+  before   => Exec['symbolic link'],
 }
-file { '/data/web_static/releases/test/index.html':
-  ensure  => 'present',
-  content => 'Holberton School'
+
+# craete a symbolic link to /data/web_static/releases/test/
+exec {'symbolic link':
+  provider => shell,
+  command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
+  before   => Exec['location'],
 }
-file { '/data/web_static/shared':
-  ensure => 'directory'
+
+# add location to match requests from https://domain/hbnb_static/...
+exec {'location':
+  provider => shell,
+  command  => 'sudo sed -i \'40i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n\' /etc/nginx/sites-available/default',
+  before   => Exec['restart nginx'],
 }
-# always create a symbolic link to /data/web_static/releases/test/ folder (/data/web_static/current)
-file { '/data/web_static/current':
-  ensure => 'link',
-  target => '/data/web_static/releases/test'
+
+# restart nginx once done with the configuration change / update
+exec {'restart nginx':
+  provider => shell,
+  command  => 'sudo service nginx restart',
+  before   => File['/data/']
 }
-# give ownership of the /data/ folder to ubuntu (owner and group)
-file { '/data/':
-  ensure  => 'directory',
+
+# change ownership of the /data/ repo to ubuntu (owner and group)
+file {'/data/':
+  ensure  => directory,
   owner   => 'ubuntu',
   group   => 'ubuntu',
-  recurse => true
-}
-# update Nginx configuration to serve content of /data/web_static/current to 'hbnb_static' requests (use alias)
-exec { 'add location':
-  command => 'sudo sed -i \'40i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n\' /etc/nginx/sites-available/default',
-  before  => Exec['restart nginx']
-}
-# update/restart Nginx after the configuration
-exec { 'restart nginx':
-  command => 'sudo service nginx restart',
+  recurse => true,
 }
