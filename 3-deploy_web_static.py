@@ -32,21 +32,28 @@ env.hosts = ['54.82.173.163', '18.210.20.118']
 
 def do_deploy(archive_path):
     """
-        Distributes the archive
+        distributes the archive
     """
+    # check that the archive_path exists, return False if not
     if os.path.exists(archive_path):
+        # derive file & folder names from archive name
         filename = archive_path[9:]
         archive_folder = "/data/web_static/releases/" + filename[:-4]
         tmp_archive = "/tmp/" + filename
+        # upload the archive
         put(archive_path, "/tmp/")
+        # create folder and unzip archive into it
         run("sudo mkdir -p {}".format(archive_folder))
         run("sudo tar -xzf {} -C {}/".format(tmp_archive,
                                              archive_folder))
+        # remove archive zip file  (delete)
         run("sudo rm {}".format(tmp_archive))
+        # move the unzipped files into the correct folder & delete web_static
         run("sudo mv {}/web_static/* {}".format(archive_folder,
                                                 archive_folder))
         run("sudo rm -rf {}/web_static".format(archive_folder))
         run("sudo rm -rf /data/web_static/current")
+        # create symbolic link to archive folder
         run("sudo ln -s {} /data/web_static/current".format(archive_folder))
 
         print("New version deployed!")
