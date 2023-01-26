@@ -14,9 +14,12 @@ def deploy():
         functions
     """
     # call the do_pack fn and store the path of the created archive(how?)
-    archive_path = do_pack()
+    deploy.set = getattr(deploy, 'set', 0) + 1
+    # only store archive_path if its not been set (i.e. make it static)
+    if deploy.set == 1:
+        deploy.archive_path = do_pack()
     # return false if no archive has been created
-    if not archive_path:
+    if not deploy.archive_path:
         return False
-    # call the do_deploy(archive_path) function, using the new path
-    return do_deploy(archive_path)
+    # call the do_deploy(archive_path) function, using the returned path
+    return do_deploy(deploy.archive_path)
