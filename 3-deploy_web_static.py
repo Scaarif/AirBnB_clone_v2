@@ -5,8 +5,54 @@
 """
 import os
 from fabric.api import *
-do_pack = __import__('1-pack_web_static').do_pack
-do_deploy = __import__('2-do_deploy_web_static').do_deploy
+from datetime import datetime
+
+
+def do_pack():
+    """ creates the versions folder and it,
+        generates the archive
+    """
+    try:
+        # create the directory 'versions' if it doesn't exist
+        local('mkdir -p versions')
+        # generate the archive into the created folder
+        now = datetime.now().strftime("%Y%m%d%H%M%S")
+        archive_path = 'versions/web_static_{}.tgz'.format(now)
+        # print(f'Packing web_static to {archive_path}')
+        local('tar -cvzf {} web_static/'.format(archive_path))
+        # print(f'web_static packed: {archive_path} -> {size}Bytes')
+        return archive_path
+    except Exception:
+        return None
+
+
+env.user = 'ubuntu'
+env.hosts = ['54.82.173.163', '18.210.20.118']
+
+
+def do_deploy(archive_path):
+    """
+        Distributes the archive
+    """
+    if os.path.exists(archive_path):
+        filename = archive_path[9:]
+        archive_folder = "/data/web_static/releases/" + filename[:-4]
+        tmp_archive = "/tmp/" + filename
+        put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(archive_folder))
+        run("sudo tar -xzf {} -C {}/".format(tmp_archive,
+                                             archive_folder))
+        run("sudo rm {}".format(tmp_archive))
+        run("sudo mv {}/web_static/* {}".format(archive_folder,
+                                                archive_folder))
+        run("sudo rm -rf {}/web_static".format(archive_folder))
+        run("sudo rm -rf /data/web_static/current")
+        run("sudo ln -s {} /data/web_static/current".format(archive_folder))
+
+        print("New version deployed!")
+        return True
+    else:
+        return False
 
 
 def deploy():
