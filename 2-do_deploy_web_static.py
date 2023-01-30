@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Do deploy """
-from fabric import *
+from fabric.api import *
 import os
 
 
