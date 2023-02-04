@@ -27,5 +27,6 @@ class State(BaseModel, Base):
             for key, val in all_cities.items():
                 if self.id in str(val):
                     # state_cities[key] = str(val)
-                    state_cities.append(str(val))
+                    state_cities.append(val)
+                    # state_cities.append(str(val))
         return state_cities  # a dict of City objects in this state
