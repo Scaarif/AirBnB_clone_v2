@@ -37,7 +37,7 @@ def hello_world_2():
 @app.route('/c/<text>')
 def hello_world_3(text):
     """ Returns 'C' followed by (space replaced underscores) text """
-    return f"C {escape(text).replace('_', ' ')}"
+    return "C {}".format(escape(text).replace('_', ' '))
 
 
 # route to trigger if no 'text' in url (defaults to defaults value)
@@ -47,7 +47,7 @@ def hello_world_3(text):
 def hello_world_4(text):
     """ Returns 'Python' followed by (space replaced underscores) text
     Note: <text> defaults to 'is cool' if undefined """
-    return f"Python {escape(text).replace('_', ' ')}"
+    return "Python {}".format(escape(text).replace('_', ' '))
 
 
 @app.route('/number/<int:n>')
