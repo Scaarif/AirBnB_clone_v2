@@ -30,7 +30,7 @@ def hello_world_2():
 @app.route('/c/<text>')
 def hello_world_3(text):
     """ Returns 'C' followed by (space replaced underscores) text """
-    return f"C {escape(text).replace('_', ' ')}"
+    return "C {}".format(escape(text).replace('_', ' '))
 
 
 if __name__ == '__main__':
