@@ -14,14 +14,14 @@
 		{%- elif state %}
 		<H1>State: {{state.name}}</H1>
 		<H3>Cities:</H3>
-			{%- if state.cities %}
-			<UL>
-				{%- for city in state.cities|sort(attribute='name') %}
-					<LI>{{city.id}}: <B>{{city.name}}</B></LI>
-				{%- endfor %}
-			{%- endif %}
+		{%- if state.cities %}
+		<UL>
+			{%- for city in state.cities|sort(attribute='name') %}
+				<LI>{{city.id}}: <B>{{city.name}}</B></LI>
+			{%- endfor %}
+		{%- endif %}
 
-			</UL>
+		</UL>
 		{%- endif %}
 	</BODY>
 </HTML>

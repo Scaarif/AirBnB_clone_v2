@@ -28,7 +28,7 @@ def close_context(self):
 
 
 # define a route to trigger the function defined right after
-@app.route('/state')
+@app.route('/states')
 def states():
     """ Renders an HTML template listing all States """
     # get dict values from all() results
@@ -37,7 +37,7 @@ def states():
     return render_template('9-states.html', states=states)
 
 
-@app.route('/state/<id>')
+@app.route('/states/<id>')
 def state_and_cities(id):
     """ Renders an HTML template listing State(of <id>) cities """
     # get dict values from all() results
