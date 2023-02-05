@@ -25,7 +25,7 @@ def close_context(self):
 
 
 # define a route to trigger the function defined right after
-@app.route('/cities_by_state')
+@app.route('/cities_by_states')
 def states_and_their_cities():
     """ Renders an HTML template with all the States and their cities """
     # get dict values from all() results

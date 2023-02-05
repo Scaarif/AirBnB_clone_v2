@@ -42,7 +42,7 @@ def state_and_cities(id):
     """ Renders an HTML template listing State(of <id>) cities """
     # get dict values from all() results
     states = storage.all(State).values()
-    print('id -> ', id)
+    # print('id -> ', id)
     for state in states:
         if state.id == id:
             state = state
