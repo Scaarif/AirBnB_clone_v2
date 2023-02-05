@@ -49,7 +49,7 @@ def hello_world_4(text):
 @app.route('/number/<int:n>')
 def hello_number(n):
     """ returns "n is a number" if n is an int """
-    return "n is a number"
+    return "{} is a number".format(n)
 
 
 if __name__ == '__main__':
